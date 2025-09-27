@@ -1,6 +1,7 @@
 using Avalonia.Controls;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
+using System.Collections.ObjectModel;
 using System.Collections.Specialized;
 using System.ComponentModel;
 using System.Linq;
@@ -19,10 +20,14 @@ public partial class MainWindow : Window
 public partial class MainViewModel : ObservableObject
 {
     [ObservableProperty]
-    public partial ObservableBindingList<Item> Items { get; set; } = [];
+    public partial ObservableBindingList<Item> Items { get; set; } = 
+        [
+        new() { Name = "Item 1", Value = 10 }, 
+        new() { Name = "Item 2", Value = 10 }, 
+        new() { Name = "Item 3", Value = 10 }];
 
     [ObservableProperty]
-    public partial string Name { get; set; } = "Item 1";
+    public partial string Name { get; set; } = "New Item 1";
 
     [ObservableProperty]
     public partial int Value { get; set; } = 5;
@@ -31,14 +36,15 @@ public partial class MainViewModel : ObservableObject
 
     public MainViewModel()
     {
-        Items.ListChanged += (s, e) => OnPropertyChanged(nameof(TotalValue));
+        Items.ListChanged += (s, e) =>
+        OnPropertyChanged(nameof(TotalValue));
     }
 
     [RelayCommand]
     public void Add()
     {
         Items.Add(new Item { Name = this.Name, Value = this.Value });
-        Name = "Item " + (Items.Count+1);
+        Name = "New Item " + (Items.Count+1);
     }
 
     [RelayCommand]
@@ -66,6 +72,7 @@ public partial class ObservableBindingList<T> : BindingList<T>, INotifyCollectio
         base.InsertItem(index, item);
         CollectionChanged?.Invoke(index, new NotifyCollectionChangedEventArgs(NotifyCollectionChangedAction.Add, item, index));
         OnPropertyChanged(nameof(Count));
+        OnPropertyChanged("Item[]");
     }
 
     protected override void RemoveItem(int index)
@@ -74,5 +81,6 @@ public partial class ObservableBindingList<T> : BindingList<T>, INotifyCollectio
         base.RemoveItem(index);
         CollectionChanged?.Invoke(index, new NotifyCollectionChangedEventArgs(NotifyCollectionChangedAction.Remove, item, index));
         OnPropertyChanged(nameof(Count));
+        OnPropertyChanged("Item[]");
     }
 }
