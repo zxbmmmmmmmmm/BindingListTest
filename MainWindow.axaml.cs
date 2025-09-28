@@ -46,6 +46,14 @@ public partial class MainViewModel : ObservableObject
         Items.Add(new Item { Name = this.Name, Value = this.Value });
         Name = "New Item " + (Items.Count+1);
     }
+    [RelayCommand]
+    public void AddAll()
+    {
+        foreach (var item in Items)
+        {
+            item.Value += 10;
+        }
+    }
 
     [RelayCommand]
     public void Remove(Item item)

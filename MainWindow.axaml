@@ -58,7 +58,8 @@
                 Spacing="12">
                 <TextBox Text="{Binding Name, Mode=TwoWay}" Watermark="Name" />
                 <NumericUpDown FormatString="0" Watermark="Value" Value="{Binding Value, Mode=TwoWay}" />
-                <Button Command="{Binding AddCommand}" Content="Add" />
+				<Button Command="{Binding AddCommand}" Content="Add" />
+				<Button Command="{Binding AddAllCommand}" Content="Add All" />
             </StackPanel>
         </Grid>
     </Grid>
